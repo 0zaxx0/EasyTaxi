@@ -1,0 +1,10 @@
+{% extends "winn/header.html" %}
+{% block content %}
+<h3><a href="/winn/{{HistoricoBienvenida.id}}"> {{ HistoricoBienvenida.driver_id }}</a></h3>
+<h6> on {{ HistoricoBienvenida.date }}</h6>
+
+<div class = "container">
+        {{HistoricoBienvenida.driver_id|safe|linebreaks}}
+</div>
+<br><br>
+{% endblock %}
