@@ -1,0 +1,3 @@
+pyexcel-webio>=0.0.9
+Django>=1.6.1
+django-bootstrap3
