@@ -36,14 +36,12 @@ INSTALLED_APPS = [
     'winn',
     'ex',
     'archivos',
-    'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap3',
 ]
 
 MIDDLEWARE_CLASSES = [

@@ -1,10 +1,3 @@
-#crawler
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
-import re
-import urllib.error
-import requests
-import http.client
 #ref y bein
 from xlsxwriter.workbook import Workbook
 import io
@@ -20,14 +13,9 @@ from archivos.models import Document
 from django_pandas.io import read_frame
 from winn.models import Conductor,Referido,Condiciones, CondicionesRef, HistoricoBienvenida
 from django.http import HttpResponseBadRequest, HttpResponse, StreamingHttpResponse
-import openpyxl
 #from openpyxl import Workbook
-from openpyxl.writer.excel import save_virtual_workbook
 import django_excel as excel
 import pandas as pd
-from xlrd.sheet import ctype_text
-import xlrd
-import pyexcel as pe
 from django import forms
 import datetime as dt
 import sqlite3
@@ -136,178 +124,6 @@ def testurl(str):
     except urllib.error.URLError:
         return False
 
-def TwtterRestriccion():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/RestriccionHoy")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=len(ffind):
-        link="https://twitter.com/RestriccionHoy/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def TwitterUOCT():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/UOCT_RM")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=len(ffind):
-        link="https://twitter.com/UOCT_RM/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def TwitterRadioCarab():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/radiocarab")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=len(ffind):
-        link="https://twitter.com/radiocarab/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def TwitterAutopCentral():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/AutopCentral")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=len(ffind):
-        link="https://twitter.com/AutopCentral/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def TwitterVespucio_Sur():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/Vespucio_Sur")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=len(ffind):
-        link="https://twitter.com/Vespucio_Sur/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def TwitterVespucio_Norte():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/Vespucio_Norte")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=6:
-        link="https://twitter.com/Vespucio_Norte/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def TwitterCostaneraNorte():
-    #abre pagina de twitter
-    webpage=urlopen("https://twitter.com/CostaneraNorte_")
-    #lee la pagina
-    html=webpage.read()
-    #lista de numeros de twitt
-    ffind=re.findall('data-tweet-id="(\d+)"',format(html))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de twiter
-    while i!=len(ffind):
-        link="https://twitter.com/CostaneraNorte_/status/"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-        else:
-            print ("Dosent excits link")
-        i=i+1
-    return lista
-
-def cooperativa():
-    #abre pagina de cooperativa
-    webpage=urlopen("http://www.cooperativa.cl/noticias/site/tax/port/all/taxport_3_88_642_1.html")
-    #lee la pagina
-    html=webpage.read()
-    soup = BeautifulSoup(html)
-    # kill all script and style elements
-    for script in soup(["script", "style"]):
-        script.extract()    # rip it out
-    # get text
-    text = soup.get_text()
-    # break into lines and remove leading and trailing space on each
-    lines = (line.strip() for line in text.splitlines())
-    # break multi-headlines into a line each
-    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-    # drop blank lines
-    text = '\n'.join(chunk for chunk in chunks if chunk)
-    #lista de links de la noticia, no incluye "http://www.cooperativa.cl" 
-    ffind=re.findall(r'(?:href=["])([:/.A-z?<_&\s=>0-9;-]+)" class="titular"',format(html))
-    #intento de obtener el titular de la noticia, aqui fracasa todo 'Noticias de Combustibles\n([:/.A-z?<_&\s=>0-9;-]+)[^\|]' \n*(\d{8}).+\n
-    fnd=re.findall(r'(?:Noticias de Combustibles)([ñÑáéíóúÁÉÍÓÚ:,/.A-z?<_&\s=>0-9;-\|]+)Ver más en:',text)
-    time=re.findall(r'(\d{10}:\d{2})',fnd[0])
-    titu=re.findall(r'[\|]\n(.*)\n',fnd[0])
-    #largo de lista de links noticias cooperativa
-    print(len(ffind))
-    #largo de lista de titulares de noticias, por ahora 0
-    print(len(titu))
-    i=0
-    lista=[]
-    #ciclo para mostrar links de noticias cooperativa
-    while i!=len(ffind):
-        link="http://www.cooperativa.cl"+ffind[i]
-        if testurl(format(link)):
-            lista.append(link)
-            lista.append(titu[i])
-        else:
-            print ("Dosent excits link: ",link)
-        i=i+1
-    return lista
 
 def contact(request):
     sio = io.BytesIO()

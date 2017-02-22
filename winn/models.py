@@ -1,5 +1,4 @@
 from django.db import models
-from django_pandas.managers import DataFrameManager
 from datetime import datetime
 # Create your models here.
 
@@ -12,7 +11,6 @@ class Conductor(models.Model):
     d_active=models.CharField(max_length=8)
     d_date=models.DateField()
     total_c=models.IntegerField()
-    objects=DataFrameManager()
 
     def __str__(self):
         return self.d_id
@@ -24,8 +22,7 @@ class Referido(models.Model):
     r_email=models.EmailField(max_length=50)
     r_active=models.CharField(max_length=8)
     r_rut=models.IntegerField()
-    objects=DataFrameManager()
-    
+
     def __str__(self):
         return self.r_id
     
